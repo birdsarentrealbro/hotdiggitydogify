@@ -4,25 +4,26 @@ document.getElementById('toggle').addEventListener('click', async () => {
   chrome.tabs.sendMessage(tab.id, { action: 'toggle' }, (response) => {
     const status = document.getElementById('status');
     if (response && response.enabled) {
-      status.textContent = '✓ Enabled';
+      status.textContent = 'Enabled';
       status.style.color = 'green';
     } else {
-      status.textContent = '✗ Disabled';
+      status.textContent = 'Disabled';
       status.style.color = 'red';
     }
   });
 });
 
-// Check current status when popup opens
+// chek status of replacer
 chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
   chrome.tabs.sendMessage(tab.id, { action: 'getStatus' }, (response) => {
     const status = document.getElementById('status');
     if (response && response.enabled) {
-      status.textContent = '✓ Enabled';
+      status.textContent = 'Enabled';
       status.style.color = 'green';
     } else {
-      status.textContent = '✗ Disabled';
+      status.textContent = 'Disabled';
       status.style.color = 'red';
     }
   });
+
 });
