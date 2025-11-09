@@ -2,7 +2,7 @@ let isEnabled = false;
 let originalContent = new Map();
 let observer = null;
 
-// Store original content
+// store og content
 function storeOriginal(element, property, value) {
   const key = element.toString() + property;
   if (!originalContent.has(key)) {
@@ -10,7 +10,7 @@ function storeOriginal(element, property, value) {
   }
 }
 
-// Replace all text nodes with "hot diggity dog!"
+// replace all text with "hot diggity dog!"
 function replaceText(node) {
   if (!isEnabled) return;
   
@@ -18,7 +18,7 @@ function replaceText(node) {
     const text = node.textContent.trim();
     if (text.length > 0) {
       storeOriginal(node, 'textContent', node.textContent);
-      node.textContent = 'hot diggity dog!';
+      node.textContent = 'hot diggity dog!'; //change this if you want it to say smth else
     }
   } else {
     for (let child of node.childNodes) {
@@ -27,7 +27,7 @@ function replaceText(node) {
   }
 }
 
-// Replace all images with specific image
+// replace all image with my image
 function replaceImages() {
   if (!isEnabled) return;
   
@@ -36,17 +36,17 @@ function replaceImages() {
     storeOriginal(img, 'src', img.src);
     storeOriginal(img, 'srcset', img.srcset);
     
-    // Check if it's a GIF
+    // check if gif
     if (img.src.toLowerCase().endsWith('.gif') || img.src.toLowerCase().includes('.gif?')) {
-      img.src = 'https://file.garden/aP_3ST9j3ifC7mP-/hot%2Bdiggity%2Bdog%2B-%2BMade%2Bwith%2BClipchamp%2B(1).gif';
+      img.src = 'https://file.garden/aP_3ST9j3ifC7mP-/hot%2Bdiggity%2Bdog%2B-%2BMade%2Bwith%2BClipchamp%2B(1).gif'; //replace with link to your gif
     } else {
-      img.src = 'https://i.ibb.co/PZ5C23by/caption.webp';
+      img.src = 'https://i.ibb.co/PZ5C23by/caption.webp'; //replace with link to your image file
     }
     img.srcset = '';
   });
 }
 
-// Replace background images
+// replace bg
 function replaceBackgroundImages() {
   if (!isEnabled) return;
   
@@ -55,32 +55,32 @@ function replaceBackgroundImages() {
     const style = window.getComputedStyle(el);
     if (style.backgroundImage && style.backgroundImage !== 'none') {
       storeOriginal(el, 'backgroundImage', el.style.backgroundImage);
-      el.style.backgroundImage = `url(https://i.ibb.co/PZ5C23by/caption.webp)`;
+      el.style.backgroundImage = `url(https://i.ibb.co/PZ5C23by/caption.webp)`; //replace with link to your image
     }
   });
 }
 
-// Replace all videos with specific video
+// replace all videos with my vide (not working rn)
 function replaceVideos() {
   if (!isEnabled) return;
   
   const videos = document.querySelectorAll('video');
   videos.forEach((video) => {
     storeOriginal(video, 'src', video.src);
-    video.src = 'https://file.garden/aP_3ST9j3ifC7mP-/hot%20diggity%20dog%20-%20Made%20with%20Clipchamp%20(1).mp4';
+    video.src = 'https://file.garden/aP_3ST9j3ifC7mP-/hot%20diggity%20dog%20-%20Made%20with%20Clipchamp%20(1).mp4'; //replaece with link to your video
     video.loop = true;
     video.controls = true;
     video.setAttribute('controlslist', 'nodownload nofullscreen noremoteplayback');
     video.load();
   });
   
-  // Replace iframes that might contain videos
+  // replace iframe
   const iframes = document.querySelectorAll('iframe');
   iframes.forEach((iframe) => {
     const src = iframe.src.toLowerCase();
     if (src.includes('youtube') || src.includes('vimeo') || src.includes('video') || src.includes('embed')) {
       const video = document.createElement('video');
-      video.src = 'https://file.garden/aP_3ST9j3ifC7mP-/hot%20diggity%20dog%20-%20Made%20with%20Clipchamp%20(1).mp4';
+      video.src = 'https://file.garden/aP_3ST9j3ifC7mP-/hot%20diggity%20dog%20-%20Made%20with%20Clipchamp%20(1).mp4'; //same thing here
       video.loop = true;
       video.controls = true;
       video.setAttribute('controlslist', 'nodownload nofullscreen noremoteplayback');
@@ -91,7 +91,7 @@ function replaceVideos() {
   });
 }
 
-// Enable the replacements
+// enable replacers
 function enable() {
   isEnabled = true;
   replaceText(document.body);
@@ -101,14 +101,14 @@ function enable() {
   startObserver();
 }
 
-// Disable and restore original content
+// disavle and restore
 function disable() {
   isEnabled = false;
   stopObserver();
-  location.reload(); // Easiest way to restore everything
+  location.reload(); // easy way to restore
 }
 
-// Start observing for new content
+// start looking for new content
 function startObserver() {
   if (observer) return;
   
@@ -149,7 +149,7 @@ function startObserver() {
   });
 }
 
-// Stop observing
+// Stop looking
 function stopObserver() {
   if (observer) {
     observer.disconnect();
@@ -157,7 +157,7 @@ function stopObserver() {
   }
 }
 
-// Listen for messages from popup
+// listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'toggle') {
     if (isEnabled) {
@@ -170,4 +170,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     sendResponse({ enabled: isEnabled });
   }
   return true;
+
 });
